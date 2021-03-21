@@ -1,0 +1,9 @@
+api:
+  bind_addr: 8082
+  log_level: debug
+  session_key: 5tu2459gnf9x43gty8394utnr341m5y34yu5cby1n5034uhtggferuhgbfh1j38m2454p20546gg
+database:
+  host: localhost
+  username: magdv_test
+  password: q1w2e3r4
+  dbname: magdv_test
