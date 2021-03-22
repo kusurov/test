@@ -10,6 +10,9 @@ Graceful Shutdown" и "Миграций". Доделаю потом.
 - [crypto](https://pkg.go.dev/golang.org/x/crypto)
 - [yaml v2.4.0](gopkg.in/yaml.v2)
 
+## БД
+Так как на данный момент не сделал миграции, в репозиторий добавил бэкап БД :))) 
+
 ## Запуск проекта
 ```sh
 go run main.go
