@@ -11,7 +11,7 @@ Graceful Shutdown". Доделаю потом.
 - [yaml v2.4.0](gopkg.in/yaml.v2)
 
 ## Миграции
-Для применения миграций использую:
+Для применения миграций использую [golang-migrate](https://github.com/golang-migrate/migrate)
 ```sh
 migrate -path migrations -database "mysql://uname:upass@tcp(host:port)/dbname" up
 ```
