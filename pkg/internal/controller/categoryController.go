@@ -14,7 +14,7 @@ import (
 )
 
 type CategoryController struct {
-	CategoryStore	store.ICategoryRepository
+	CategoryStore store.ICategoryRepository
 }
 
 func NewCategoryController(s *internal.Server) *CategoryController {
@@ -23,25 +23,25 @@ func NewCategoryController(s *internal.Server) *CategoryController {
 	}
 }
 
-func (c *CategoryController) CreateCategory(w http.ResponseWriter, r *http.Request)  {
+func (c *CategoryController) CreateCategory(w http.ResponseWriter, r *http.Request) {
 	type request struct {
 		Category struct {
-			Title    string `json:"title"`
+			Title string `json:"title"`
 		} `json:"category"`
 	}
 
 	req := &request{}
 	if err := json.NewDecoder(r.Body).Decode(req); err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
 	category := &model.Category{
-		Title:	req.Category.Title,
+		Title: req.Category.Title,
 	}
 
 	if err := c.CategoryStore.Create(category); err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
@@ -54,13 +54,13 @@ func (c *CategoryController) ShowCategory(w http.ResponseWriter, r *http.Request
 
 	id, err := strconv.ParseInt(vars["id"], 10, 64)
 	if err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
 	category, err := c.CategoryStore.Find(id, authUser)
 	if err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
@@ -72,12 +72,12 @@ func (c *CategoryController) ShowAllCategories(w http.ResponseWriter, r *http.Re
 
 	categories, err := c.CategoryStore.GetAllCategories(authUser)
 	if err != nil {
-		utils.RespondError(w, http.StatusInternalServerError, errors.New("internal server error"))
+		utils.RespondError(w, r, http.StatusInternalServerError, errors.New("internal server error"))
 		return
 	}
 
 	if len(categories) == 0 {
-		utils.RespondError(w, http.StatusNotFound, errors.New("not found categories"))
+		utils.RespondError(w, r, http.StatusNotFound, errors.New("not found categories"))
 		return
 	}
 
@@ -90,19 +90,19 @@ func (c *CategoryController) EnableCategory(w http.ResponseWriter, r *http.Reque
 
 	id, err := strconv.ParseInt(vars["id"], 10, 64)
 	if err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
 	category, err := c.CategoryStore.Find(id, authUser)
 	if err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
 	updatedCategory, err := c.CategoryStore.EnableCategory(category)
 	if err != nil {
-		utils.RespondError(w, http.StatusInternalServerError, err)
+		utils.RespondError(w, r, http.StatusInternalServerError, err)
 		return
 	}
 
@@ -115,19 +115,19 @@ func (c *CategoryController) DisableCategory(w http.ResponseWriter, r *http.Requ
 
 	id, err := strconv.ParseInt(vars["id"], 10, 64)
 	if err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
 	category, err := c.CategoryStore.Find(id, authUser)
 	if err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
 	updatedCategory, err := c.CategoryStore.DisableCategory(category)
 	if err != nil {
-		utils.RespondError(w, http.StatusInternalServerError, err)
+		utils.RespondError(w, r, http.StatusInternalServerError, err)
 		return
 	}
 

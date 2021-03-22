@@ -14,18 +14,18 @@ import (
 )
 
 type UserController struct {
-	UserStore 		store.IUserRepository
-	SessionStore	sessions.Store
+	UserStore    store.IUserRepository
+	SessionStore sessions.Store
 }
 
 func NewUserController(s *internal.Server) *UserController {
 	return &UserController{
-		UserStore: s.Store.User(),
+		UserStore:    s.Store.User(),
 		SessionStore: s.SessionStore,
 	}
 }
 
-func (u *UserController) CreateUser(w http.ResponseWriter, r *http.Request)  {
+func (u *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	type request struct {
 		User struct {
 			Login    string `json:"login"`
@@ -37,7 +37,7 @@ func (u *UserController) CreateUser(w http.ResponseWriter, r *http.Request)  {
 
 	req := &request{}
 	if err := json.NewDecoder(r.Body).Decode(req); err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
@@ -49,7 +49,7 @@ func (u *UserController) CreateUser(w http.ResponseWriter, r *http.Request)  {
 	}
 
 	if err := u.UserStore.Create(user); err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
@@ -62,13 +62,13 @@ func (u *UserController) ShowUser(w http.ResponseWriter, r *http.Request) {
 
 	id, err := strconv.ParseInt(vars["id"], 10, 64)
 	if err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
 	user, err := u.UserStore.Find(id)
 	if err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
@@ -84,25 +84,25 @@ func (u *UserController) Authorize(w http.ResponseWriter, r *http.Request) {
 
 	req := &request{}
 	if err := json.NewDecoder(r.Body).Decode(req); err != nil {
-		utils.RespondError(w, http.StatusBadRequest, errors.New("Uncorrected request"))
+		utils.RespondError(w, r, http.StatusBadRequest, errors.New("Uncorrected request"))
 		return
 	}
 
 	user, err := u.UserStore.FindByLogin(req.Login)
 	if err != nil || !user.ComparePassword(req.Password) {
-		utils.RespondError(w, http.StatusUnauthorized, errors.New("Access denied"))
+		utils.RespondError(w, r, http.StatusUnauthorized, errors.New("Access denied"))
 		return
 	}
 
 	session, err := u.SessionStore.Get(r, "token")
 	if err != nil {
-		utils.RespondError(w, http.StatusInternalServerError, err)
+		utils.RespondError(w, r, http.StatusInternalServerError, err)
 		return
 	}
 
 	session.Values["user_id"] = user.ID
 	if err := u.SessionStore.Save(r, w, session); err != nil {
-		utils.RespondError(w, http.StatusInternalServerError, err)
+		utils.RespondError(w, r, http.StatusInternalServerError, err)
 		return
 	}
 

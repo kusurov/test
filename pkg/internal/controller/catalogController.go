@@ -14,7 +14,7 @@ import (
 )
 
 type CatalogController struct {
-	ProductStore	store.IProductRepository
+	ProductStore store.IProductRepository
 }
 
 func NewCatalogController(s *internal.Server) *CatalogController {
@@ -23,7 +23,7 @@ func NewCatalogController(s *internal.Server) *CatalogController {
 	}
 }
 
-func (c *CatalogController) ShowCatalog(w http.ResponseWriter, r *http.Request)  {
+func (c *CatalogController) ShowCatalog(w http.ResponseWriter, r *http.Request) {
 	authUser := middleware.GetAuthUser(r)
 
 	searchCriteria := &model.ProductSearchCriteria{}
@@ -31,25 +31,25 @@ func (c *CatalogController) ShowCatalog(w http.ResponseWriter, r *http.Request) 
 
 	products, err := c.ProductStore.GetAllProducts(authUser, searchCriteria)
 	if err != nil {
-		utils.RespondError(w, http.StatusInternalServerError, errors.New("internal server error"))
+		utils.RespondError(w, r, http.StatusInternalServerError, errors.New("internal server error"))
 		return
 	}
 
 	if len(products) == 0 {
-		utils.RespondError(w, http.StatusNotFound, errors.New("not found products"))
+		utils.RespondError(w, r, http.StatusNotFound, errors.New("not found products"))
 		return
 	}
 
 	utils.Respond(w, r, http.StatusOK, products)
 }
 
-func (c *CatalogController) ShowCatalogFromCategory(w http.ResponseWriter, r *http.Request)  {
+func (c *CatalogController) ShowCatalogFromCategory(w http.ResponseWriter, r *http.Request) {
 	authUser := middleware.GetAuthUser(r)
 	vars := mux.Vars(r)
 
 	categoryId, err := strconv.ParseInt(vars["category_id"], 10, 64)
 	if err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
@@ -59,7 +59,7 @@ func (c *CatalogController) ShowCatalogFromCategory(w http.ResponseWriter, r *ht
 	products, err := c.ProductStore.GetAllProductsFromCategory(authUser, categoryId, searchCriteria)
 
 	if len(products) == 0 {
-		utils.RespondError(w, http.StatusNotFound, errors.New("not found products"))
+		utils.RespondError(w, r, http.StatusNotFound, errors.New("not found products"))
 		return
 	}
 

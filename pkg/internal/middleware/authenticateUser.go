@@ -15,19 +15,19 @@ func AuthenticateUser(s *internal.Server) mux.MiddlewareFunc {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			session, err := s.SessionStore.Get(r, "token")
 			if err != nil {
-				utils.RespondError(w, http.StatusUnauthorized, errors.New("Not authenticated"))
+				utils.RespondError(w, r, http.StatusUnauthorized, errors.New("Not authenticated"))
 				return
 			}
 
 			id, ok := session.Values["user_id"]
 			if !ok {
-				utils.RespondError(w, http.StatusUnauthorized, errors.New("Not authenticated"))
+				utils.RespondError(w, r, http.StatusUnauthorized, errors.New("Not authenticated"))
 				return
 			}
 
 			user, err := s.Store.User().Find(id.(int64))
 			if err != nil {
-				utils.RespondError(w, http.StatusUnauthorized, errors.New("Not authenticated"))
+				utils.RespondError(w, r, http.StatusUnauthorized, errors.New("Not authenticated"))
 				return
 			}
 

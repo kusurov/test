@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func Start(configPath string) error {
+func Start(configPath string, loggingPath string) error {
 	config, err := internal.NewConfig(configPath)
 	if err != nil {
 		return err
@@ -15,6 +15,10 @@ func Start(configPath string) error {
 	sessionStore := sessions.NewCookieStore([]byte(config.Api.SessionKey))
 
 	srv := internal.NewServer(config, sessionStore)
+	if err := srv.InitializeLogging(loggingPath); err != nil {
+		return err
+	}
+
 	if err := srv.CreateStore(); err != nil {
 		return err
 	}
@@ -22,5 +26,5 @@ func Start(configPath string) error {
 	routerHandler(srv)
 
 	srv.Logger.Info("Starting API server on port: " + config.Api.BindAddr)
-	return http.ListenAndServe(":" + config.Api.BindAddr, srv)
+	return http.ListenAndServe(":"+config.Api.BindAddr, srv)
 }

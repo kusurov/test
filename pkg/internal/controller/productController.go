@@ -13,8 +13,8 @@ import (
 )
 
 type ProductController struct {
-	ProductStore 	store.IProductRepository
-	CategoryStore	store.ICategoryRepository
+	ProductStore  store.IProductRepository
+	CategoryStore store.ICategoryRepository
 }
 
 func NewProductController(s *internal.Server) *ProductController {
@@ -24,34 +24,34 @@ func NewProductController(s *internal.Server) *ProductController {
 	}
 }
 
-func (p *ProductController) CreateProduct(w http.ResponseWriter, r *http.Request)  {
+func (p *ProductController) CreateProduct(w http.ResponseWriter, r *http.Request) {
 	authUser := middleware.GetAuthUser(r)
 	vars := mux.Vars(r)
 
 	id, err := strconv.ParseInt(vars["id"], 10, 64)
 	if err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
 	category, err := p.CategoryStore.Find(id, authUser)
 	if err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
 	type request struct {
-		ID 			int64 		`json:"id"`
-		Title		string		`json:"title"`
-		Weight		float32		`json:"weight"`
-		Size 		float32		`json:"size"`
-		Description string		`json:"description"`
-		PhotoLink	string		`json:"photo_link"`
-		Price		float32		`json:"price"`
+		ID          int64   `json:"id"`
+		Title       string  `json:"title"`
+		Weight      float32 `json:"weight"`
+		Size        float32 `json:"size"`
+		Description string  `json:"description"`
+		PhotoLink   string  `json:"photo_link"`
+		Price       float32 `json:"price"`
 	}
 	req := &request{}
 	if err := json.NewDecoder(r.Body).Decode(req); err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 
 		return
 	}
@@ -67,7 +67,7 @@ func (p *ProductController) CreateProduct(w http.ResponseWriter, r *http.Request
 	}
 
 	if err := p.ProductStore.Create(product); err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
@@ -80,13 +80,13 @@ func (p *ProductController) ShowProduct(w http.ResponseWriter, r *http.Request) 
 
 	id, err := strconv.ParseInt(vars["id"], 10, 64)
 	if err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
 	product, err := p.ProductStore.Find(id, authUser)
 	if err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
@@ -99,13 +99,13 @@ func (p *ProductController) DisableProduct(w http.ResponseWriter, r *http.Reques
 
 	id, err := strconv.ParseInt(vars["id"], 10, 64)
 	if err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
 	product, err := p.ProductStore.Find(id, authUser)
 	if err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
@@ -116,7 +116,7 @@ func (p *ProductController) DisableProduct(w http.ResponseWriter, r *http.Reques
 
 	updatedProduct, err := p.ProductStore.DisableProduct(product)
 	if err != nil {
-		utils.RespondError(w, http.StatusInternalServerError, err)
+		utils.RespondError(w, r, http.StatusInternalServerError, err)
 		return
 	}
 
@@ -129,13 +129,13 @@ func (p *ProductController) EnableProduct(w http.ResponseWriter, r *http.Request
 
 	id, err := strconv.ParseInt(vars["id"], 10, 64)
 	if err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
 	product, err := p.ProductStore.Find(id, authUser)
 	if err != nil {
-		utils.RespondError(w, http.StatusBadRequest, err)
+		utils.RespondError(w, r, http.StatusBadRequest, err)
 		return
 	}
 
@@ -146,7 +146,7 @@ func (p *ProductController) EnableProduct(w http.ResponseWriter, r *http.Request
 
 	updatedProduct, err := p.ProductStore.EnableProduct(product)
 	if err != nil {
-		utils.RespondError(w, http.StatusInternalServerError, err)
+		utils.RespondError(w, r, http.StatusInternalServerError, err)
 		return
 	}
 
