@@ -1,6 +1,6 @@
 ## Тестовое задание
 Выполненное тестовое задание, за исключением пункта: "Приложение должно реализовывать 
-Graceful Shutdown" и "Миграций". Доделаю потом.
+Graceful Shutdown". Доделаю потом.
 
 ## Использованные либы
 - [ozzo-validation v3.6.0](https://github.com/go-ozzo/ozzo-validation)
@@ -10,9 +10,11 @@ Graceful Shutdown" и "Миграций". Доделаю потом.
 - [crypto](https://pkg.go.dev/golang.org/x/crypto)
 - [yaml v2.4.0](gopkg.in/yaml.v2)
 
-## БД
-Так как на данный момент не сделал миграции, в репозиторий добавил бэкап БД :))) 
-
+## Миграции
+Для применения миграций использую:
+```sh
+migrate -path migrations -database "mysql://uname:upass@tcp(host:port)/dbname" up
+```
 ## Запуск проекта
 ```sh
 go run main.go
