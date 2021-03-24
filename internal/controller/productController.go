@@ -1,13 +1,13 @@
 package controller
 
 import (
-	"awesomeProject2/pkg/internal"
-	"awesomeProject2/pkg/internal/middleware"
-	"awesomeProject2/pkg/internal/model"
-	"awesomeProject2/pkg/internal/store"
-	"awesomeProject2/pkg/internal/utils"
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"kusurovAPI/internal/middleware"
+	"kusurovAPI/internal/model"
+	"kusurovAPI/internal/server"
+	"kusurovAPI/internal/store"
+	"kusurovAPI/internal/utils"
 	"net/http"
 	"strconv"
 )
@@ -17,7 +17,7 @@ type ProductController struct {
 	CategoryStore store.ICategoryRepository
 }
 
-func NewProductController(s *internal.Server) *ProductController {
+func NewProductController(s *server.Server) *ProductController {
 	return &ProductController{
 		ProductStore:  s.Store.Product(),
 		CategoryStore: s.Store.Category(),

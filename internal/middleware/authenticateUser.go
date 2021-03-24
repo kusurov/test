@@ -1,16 +1,16 @@
 package middleware
 
 import (
-	"awesomeProject2/pkg/internal"
-	"awesomeProject2/pkg/internal/model"
-	"awesomeProject2/pkg/internal/utils"
 	"context"
 	"errors"
 	"github.com/gorilla/mux"
+	"kusurovAPI/internal/model"
+	"kusurovAPI/internal/server"
+	"kusurovAPI/internal/utils"
 	"net/http"
 )
 
-func AuthenticateUser(s *internal.Server) mux.MiddlewareFunc {
+func AuthenticateUser(s *server.Server) mux.MiddlewareFunc {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			session, err := s.SessionStore.Get(r, "token")

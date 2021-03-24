@@ -1,18 +1,18 @@
 package store
 
 import (
-	"awesomeProject2/pkg/internal/model"
 	"database/sql"
 	"github.com/sirupsen/logrus"
+	"kusurovAPI/internal/model"
 )
 
 type productRepository struct {
-	db 		*sql.DB
-	logger 	*logrus.Logger
+	db     *sql.DB
+	logger *logrus.Logger
 }
 
 func (r *productRepository) Create(product *model.Product) error {
-	if err :=product.Validate(); err != nil {
+	if err := product.Validate(); err != nil {
 		return err
 	}
 
@@ -25,7 +25,7 @@ func (r *productRepository) Create(product *model.Product) error {
 					  price,      
                       category_id
                       ) VALUES (?,?,?,?,?,?,?)`,
-        product.Title,
+		product.Title,
 		product.Weight,
 		product.Size,
 		product.Description,
@@ -136,10 +136,10 @@ func (r *productRepository) GetAllProducts(requester *model.User, s *model.Produ
 			requesterStatusToView(requester),
 		)
 	} else {
-		rows, err = r.db.Query(query + " AND products.title LIKE ?",
+		rows, err = r.db.Query(query+" AND products.title LIKE ?",
 			requesterStatusToView(requester),
 			requesterStatusToView(requester),
-			"%" + s.SearchCriteria.Title + "%",
+			"%"+s.SearchCriteria.Title+"%",
 		)
 	}
 
@@ -157,7 +157,6 @@ func (r *productRepository) GetAllProducts(requester *model.User, s *model.Produ
 
 	return categories, nil
 }
-
 
 func (r *productRepository) GetAllProductsFromCategory(requester *model.User, categoryID int64, s *model.ProductSearchCriteria) ([]*model.Product, error) {
 	var query = `SELECT 
@@ -188,11 +187,11 @@ func (r *productRepository) GetAllProductsFromCategory(requester *model.User, ca
 			categoryID,
 		)
 	} else {
-		rows, err = r.db.Query(query + " AND products.title LIKE ?",
+		rows, err = r.db.Query(query+" AND products.title LIKE ?",
 			requesterStatusToView(requester),
 			requesterStatusToView(requester),
 			categoryID,
-			"%" + s.SearchCriteria.Title + "%",
+			"%"+s.SearchCriteria.Title+"%",
 		)
 	}
 
@@ -213,11 +212,10 @@ func (r *productRepository) GetAllProductsFromCategory(requester *model.User, ca
 	return categories, nil
 }
 
-
 func parseRowsToModelProduct(rows *sql.Rows) ([]*model.Product, error) {
 	products := make([]*model.Product, 0)
 
-	for rows.Next()	{
+	for rows.Next() {
 		p := &model.Product{}
 
 		err := rows.Scan(

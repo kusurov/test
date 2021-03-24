@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"awesomeProject2/pkg/internal/utils"
 	"errors"
+	"kusurovAPI/internal/utils"
 	"net/http"
 )
 

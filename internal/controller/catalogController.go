@@ -1,14 +1,14 @@
 package controller
 
 import (
-	"awesomeProject2/pkg/internal"
-	"awesomeProject2/pkg/internal/middleware"
-	"awesomeProject2/pkg/internal/model"
-	"awesomeProject2/pkg/internal/store"
-	"awesomeProject2/pkg/internal/utils"
 	"encoding/json"
 	"errors"
 	"github.com/gorilla/mux"
+	"kusurovAPI/internal/middleware"
+	"kusurovAPI/internal/model"
+	"kusurovAPI/internal/server"
+	"kusurovAPI/internal/store"
+	"kusurovAPI/internal/utils"
 	"net/http"
 	"strconv"
 )
@@ -17,7 +17,7 @@ type CatalogController struct {
 	ProductStore store.IProductRepository
 }
 
-func NewCatalogController(s *internal.Server) *CatalogController {
+func NewCatalogController(s *server.Server) *CatalogController {
 	return &CatalogController{
 		ProductStore: s.Store.Product(),
 	}

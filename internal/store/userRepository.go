@@ -1,14 +1,14 @@
 package store
 
 import (
-	"awesomeProject2/pkg/internal/model"
 	"database/sql"
 	"github.com/sirupsen/logrus"
+	"kusurovAPI/internal/model"
 )
 
 type userRepository struct {
-	db 		*sql.DB
-	logger 	*logrus.Logger
+	db     *sql.DB
+	logger *logrus.Logger
 }
 
 func (r *userRepository) Create(u *model.User) error {
@@ -54,15 +54,15 @@ func (r *userRepository) Find(id int64) (*model.User, error) {
 	u := &model.User{}
 
 	err := r.db.QueryRow(
-			"SELECT user_id, login, phone, name, password, access FROM users WHERE `user_id` = ?", id,
-		).Scan(
-			&u.ID,
-			&u.Login,
-			&u.Phone,
-			&u.Name,
-			&u.Password,
-			&u.Access,
-		)
+		"SELECT user_id, login, phone, name, password, access FROM users WHERE `user_id` = ?", id,
+	).Scan(
+		&u.ID,
+		&u.Login,
+		&u.Phone,
+		&u.Name,
+		&u.Password,
+		&u.Access,
+	)
 
 	if err != nil {
 		r.logger.Warn(err)

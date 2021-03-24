@@ -1,9 +1,10 @@
-package src
+package app
 
 import (
-	"awesomeProject2/pkg/internal"
 	"context"
 	"github.com/gorilla/sessions"
+	"kusurovAPI/internal/configs"
+	"kusurovAPI/internal/server"
 	"log"
 	"net/http"
 	"os"
@@ -11,14 +12,14 @@ import (
 )
 
 func Start(configPath string, loggingPath string) error {
-	config, err := internal.NewConfig(configPath)
+	config, err := configs.NewConfig(configPath)
 	if err != nil {
 		return err
 	}
 
 	sessionStore := sessions.NewCookieStore([]byte(config.Api.SessionKey))
 
-	srv := internal.NewServer(config, sessionStore)
+	srv := server.NewServer(config, sessionStore)
 	if err := srv.InitializeLogging(loggingPath); err != nil {
 		return err
 	}
@@ -29,7 +30,7 @@ func Start(configPath string, loggingPath string) error {
 
 	routerHandler(srv)
 
-	server := &http.Server{
+	initServer := &http.Server{
 		Addr:    ":" + config.Api.BindAddr,
 		Handler: srv,
 	}
@@ -37,7 +38,7 @@ func Start(configPath string, loggingPath string) error {
 	go func() {
 		srv.Logger.Info("Starting API server on port: " + config.Api.BindAddr)
 
-		if err := server.ListenAndServe(); err != nil {
+		if err := initServer.ListenAndServe(); err != nil {
 			srv.Logger.Error(err)
 		}
 	}()
@@ -47,7 +48,7 @@ func Start(configPath string, loggingPath string) error {
 
 	<-cancel
 	srv.Logger.Info("Closing server: " + config.Api.BindAddr)
-	if err := server.Shutdown(context.Background()); err != nil {
+	if err := initServer.Shutdown(context.Background()); err != nil {
 		return err
 	}
 

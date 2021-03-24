@@ -1,14 +1,14 @@
 package store
 
 import (
-	"awesomeProject2/pkg/internal/model"
 	"database/sql"
 	"github.com/sirupsen/logrus"
+	"kusurovAPI/internal/model"
 )
 
 type categoryRepository struct {
-	db 		*sql.DB
-	logger 	*logrus.Logger
+	db     *sql.DB
+	logger *logrus.Logger
 }
 
 func (r *categoryRepository) Create(c *model.Category) error {
@@ -35,7 +35,7 @@ func (r *categoryRepository) Create(c *model.Category) error {
 	return nil
 }
 
-func (r *categoryRepository) Find(id int64, requester *model.User) (*model.Category, error)  {
+func (r *categoryRepository) Find(id int64, requester *model.User) (*model.Category, error) {
 	c := &model.Category{}
 
 	err := r.db.QueryRow(
@@ -100,7 +100,7 @@ func (r *categoryRepository) GetAllCategories(requester *model.User) ([]*model.C
 	}
 	defer rows.Close()
 
-	for rows.Next()	{
+	for rows.Next() {
 		category := &model.Category{}
 
 		err := rows.Scan(

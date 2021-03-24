@@ -1,14 +1,14 @@
 package controller
 
 import (
-	"awesomeProject2/pkg/internal"
-	"awesomeProject2/pkg/internal/model"
-	"awesomeProject2/pkg/internal/store"
-	"awesomeProject2/pkg/internal/utils"
 	"encoding/json"
 	"errors"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
+	"kusurovAPI/internal/model"
+	"kusurovAPI/internal/server"
+	"kusurovAPI/internal/store"
+	"kusurovAPI/internal/utils"
 	"net/http"
 	"strconv"
 )
@@ -18,7 +18,7 @@ type UserController struct {
 	SessionStore sessions.Store
 }
 
-func NewUserController(s *internal.Server) *UserController {
+func NewUserController(s *server.Server) *UserController {
 	return &UserController{
 		UserStore:    s.Store.User(),
 		SessionStore: s.SessionStore,

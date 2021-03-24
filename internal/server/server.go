@@ -1,12 +1,13 @@
-package internal
+package server
 
 import (
-	"awesomeProject2/pkg/internal/store"
 	"database/sql"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
 	"github.com/sirupsen/logrus"
 	"io"
+	"kusurovAPI/internal/configs"
+	"kusurovAPI/internal/store"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -16,7 +17,7 @@ import (
 )
 
 type Server struct {
-	Config       *Config
+	Config       *configs.Config
 	Router       *mux.Router
 	Logger       *logrus.Logger
 	Store        *store.Store
@@ -25,7 +26,7 @@ type Server struct {
 	db *sql.DB
 }
 
-func NewServer(config *Config, sessionStore sessions.Store) *Server {
+func NewServer(config *configs.Config, sessionStore sessions.Store) *Server {
 	s := &Server{
 		Config:       config,
 		Router:       mux.NewRouter(),

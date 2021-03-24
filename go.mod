@@ -1,4 +1,4 @@
-module awesomeProject2
+module kusurovAPI
 
 go 1.16
 

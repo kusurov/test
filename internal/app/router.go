@@ -1,16 +1,16 @@
-package src
+package app
 
 import (
-	"awesomeProject2/pkg/internal"
-	"awesomeProject2/pkg/internal/controller"
-	"awesomeProject2/pkg/internal/middleware"
+	"kusurovAPI/internal/controller"
+	"kusurovAPI/internal/middleware"
+	"kusurovAPI/internal/server"
 )
 
-func routerHandler(s *internal.Server) {
-	user 		:= controller.NewUserController(s)
-	category 	:= controller.NewCategoryController(s)
-	product 	:= controller.NewProductController(s)
-	catalog 	:= controller.NewCatalogController(s)
+func routerHandler(s *server.Server) {
+	user := controller.NewUserController(s)
+	category := controller.NewCategoryController(s)
+	product := controller.NewProductController(s)
+	catalog := controller.NewCatalogController(s)
 
 	s.Router.Use(middleware.WriterHeaders)
 	s.Router.Use(middleware.LoggerRequests(s.Logger))

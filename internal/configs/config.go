@@ -1,4 +1,4 @@
-package internal
+package configs
 
 import (
 	"os"
@@ -8,19 +8,19 @@ import (
 
 type Config struct {
 	Api struct {
-		BindAddr 	string `yaml:"bind_addr"`
-		LogLevel 	string `yaml:"log_level"`
-		SessionKey 	string `yaml:"session_key"`
+		BindAddr   string `yaml:"bind_addr"`
+		LogLevel   string `yaml:"log_level"`
+		SessionKey string `yaml:"session_key"`
 	} `yaml:"api"`
 	Database struct {
-		Host string `yaml:"hast"`
+		Host     string `yaml:"hast"`
 		Username string `yaml:"username"`
 		Password string `yaml:"password"`
-		Dbname string `yaml:"dbname"`
+		Dbname   string `yaml:"dbname"`
 	} `yaml:"database"`
 }
 
-func NewConfig(configPath string) (*Config, error)  {
+func NewConfig(configPath string) (*Config, error) {
 	config := &Config{}
 
 	file, err := os.Open(configPath)

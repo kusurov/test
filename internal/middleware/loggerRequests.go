@@ -1,10 +1,10 @@
 package middleware
 
 import (
-	"awesomeProject2/pkg/internal/utils"
 	"context"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
+	"kusurovAPI/internal/utils"
 	"net/http"
 )
 

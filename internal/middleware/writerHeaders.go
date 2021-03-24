@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-func WriterHeaders(next http.Handler) http.Handler  {
+func WriterHeaders(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 

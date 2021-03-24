@@ -1,6 +1,6 @@
 package store
 
-import "awesomeProject2/pkg/internal/model"
+import "kusurovAPI/internal/model"
 
 type IUserRepository interface {
 	Create(*model.User) error

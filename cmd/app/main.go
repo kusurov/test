@@ -1,8 +1,8 @@
 package main
 
 import (
-	"awesomeProject2/pkg"
 	"flag"
+	"kusurovAPI/internal/app"
 	"log"
 )
 
@@ -19,7 +19,7 @@ func init() {
 func main() {
 	flag.Parse()
 
-	if err := src.Start(configPath, loggingPath); err != nil {
+	if err := app.Start(configPath, loggingPath); err != nil {
 		log.Fatal(err)
 	}
 }
