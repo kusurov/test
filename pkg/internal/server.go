@@ -21,6 +21,8 @@ type Server struct {
 	Logger       *logrus.Logger
 	Store        *store.Store
 	SessionStore sessions.Store
+
+	db *sql.DB
 }
 
 func NewServer(config *Config, sessionStore sessions.Store) *Server {
@@ -51,9 +53,16 @@ func (s *Server) CreateStore() error {
 
 	s.Logger.Info("Connected to MySQL table")
 
+	s.db = db
 	s.Store = store.New(db, s.Logger)
 
 	return nil
+}
+
+func (s *Server) CloseDB() error {
+	s.Logger.Info("Disconnected database")
+
+	return s.db.Close()
 }
 
 func (s *Server) InitializeLogging(loggingPath string) error {
