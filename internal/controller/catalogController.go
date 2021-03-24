@@ -4,22 +4,22 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/gorilla/mux"
-	"kusurovAPI/internal/middleware"
 	"kusurovAPI/internal/model"
+	"kusurovAPI/internal/repository"
 	"kusurovAPI/internal/server"
-	"kusurovAPI/internal/store"
+	"kusurovAPI/internal/server/middleware"
 	"kusurovAPI/internal/utils"
 	"net/http"
 	"strconv"
 )
 
 type CatalogController struct {
-	ProductStore store.IProductRepository
+	ProductStore repository.IProductRepository
 }
 
 func NewCatalogController(s *server.Server) *CatalogController {
 	return &CatalogController{
-		ProductStore: s.Store.Product(),
+		ProductStore: s.Store.Product,
 	}
 }
 

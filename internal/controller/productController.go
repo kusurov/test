@@ -3,24 +3,24 @@ package controller
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"kusurovAPI/internal/middleware"
 	"kusurovAPI/internal/model"
+	"kusurovAPI/internal/repository"
 	"kusurovAPI/internal/server"
-	"kusurovAPI/internal/store"
+	"kusurovAPI/internal/server/middleware"
 	"kusurovAPI/internal/utils"
 	"net/http"
 	"strconv"
 )
 
 type ProductController struct {
-	ProductStore  store.IProductRepository
-	CategoryStore store.ICategoryRepository
+	ProductStore  repository.IProductRepository
+	CategoryStore repository.ICategoryRepository
 }
 
 func NewProductController(s *server.Server) *ProductController {
 	return &ProductController{
-		ProductStore:  s.Store.Product(),
-		CategoryStore: s.Store.Category(),
+		ProductStore:  s.Store.Product,
+		CategoryStore: s.Store.Category,
 	}
 }
 

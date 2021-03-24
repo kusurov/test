@@ -1,12 +1,12 @@
-package app
+package router
 
 import (
 	"kusurovAPI/internal/controller"
-	"kusurovAPI/internal/middleware"
 	"kusurovAPI/internal/server"
+	"kusurovAPI/internal/server/middleware"
 )
 
-func routerHandler(s *server.Server) {
+func HandleRouter(s *server.Server) {
 	user := controller.NewUserController(s)
 	category := controller.NewCategoryController(s)
 	product := controller.NewProductController(s)

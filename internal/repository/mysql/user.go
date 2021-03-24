@@ -1,4 +1,4 @@
-package store
+package mysql
 
 import (
 	"database/sql"
@@ -9,6 +9,13 @@ import (
 type userRepository struct {
 	db     *sql.DB
 	logger *logrus.Logger
+}
+
+func NewUserRepository(db *sql.DB, logger *logrus.Logger) *userRepository {
+	return &userRepository{
+		db:     db,
+		logger: logger,
+	}
 }
 
 func (r *userRepository) Create(u *model.User) error {

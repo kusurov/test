@@ -4,22 +4,22 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/gorilla/mux"
-	"kusurovAPI/internal/middleware"
 	"kusurovAPI/internal/model"
+	"kusurovAPI/internal/repository"
 	"kusurovAPI/internal/server"
-	"kusurovAPI/internal/store"
+	"kusurovAPI/internal/server/middleware"
 	"kusurovAPI/internal/utils"
 	"net/http"
 	"strconv"
 )
 
 type CategoryController struct {
-	CategoryStore store.ICategoryRepository
+	CategoryStore repository.ICategoryRepository
 }
 
 func NewCategoryController(s *server.Server) *CategoryController {
 	return &CategoryController{
-		CategoryStore: s.Store.Category(),
+		CategoryStore: s.Store.Category,
 	}
 }
 

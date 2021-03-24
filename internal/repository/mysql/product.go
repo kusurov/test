@@ -1,4 +1,4 @@
-package store
+package mysql
 
 import (
 	"database/sql"
@@ -9,6 +9,13 @@ import (
 type productRepository struct {
 	db     *sql.DB
 	logger *logrus.Logger
+}
+
+func NewProductRepository(db *sql.DB, logger *logrus.Logger) *productRepository {
+	return &productRepository{
+		db:     db,
+		logger: logger,
+	}
 }
 
 func (r *productRepository) Create(product *model.Product) error {

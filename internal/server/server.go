@@ -7,7 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"io"
 	"kusurovAPI/internal/configs"
-	"kusurovAPI/internal/store"
+	"kusurovAPI/internal/repository"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -20,7 +20,7 @@ type Server struct {
 	Config       *configs.Config
 	Router       *mux.Router
 	Logger       *logrus.Logger
-	Store        *store.Store
+	Store        *repository.Repositories
 	SessionStore sessions.Store
 
 	db *sql.DB
@@ -55,7 +55,7 @@ func (s *Server) CreateStore() error {
 	s.Logger.Info("Connected to MySQL table")
 
 	s.db = db
-	s.Store = store.New(db, s.Logger)
+	s.Store = repository.NewRepositories(db, s.Logger)
 
 	return nil
 }

@@ -25,7 +25,7 @@ func AuthenticateUser(s *server.Server) mux.MiddlewareFunc {
 				return
 			}
 
-			user, err := s.Store.User().Find(id.(int64))
+			user, err := s.Store.User.Find(id.(int64))
 			if err != nil {
 				utils.RespondError(w, r, http.StatusUnauthorized, errors.New("Not authenticated"))
 				return

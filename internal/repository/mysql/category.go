@@ -1,4 +1,4 @@
-package store
+package mysql
 
 import (
 	"database/sql"
@@ -9,6 +9,13 @@ import (
 type categoryRepository struct {
 	db     *sql.DB
 	logger *logrus.Logger
+}
+
+func NewCategoryRepository(db *sql.DB, logger *logrus.Logger) *categoryRepository {
+	return &categoryRepository{
+		db:     db,
+		logger: logger,
+	}
 }
 
 func (r *categoryRepository) Create(c *model.Category) error {

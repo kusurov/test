@@ -5,6 +5,7 @@ import (
 	"github.com/gorilla/sessions"
 	"kusurovAPI/internal/configs"
 	"kusurovAPI/internal/server"
+	"kusurovAPI/internal/server/router"
 	"log"
 	"net/http"
 	"os"
@@ -28,7 +29,7 @@ func Start(configPath string, loggingPath string) error {
 		return err
 	}
 
-	routerHandler(srv)
+	router.HandleRouter(srv)
 
 	initServer := &http.Server{
 		Addr:    ":" + config.Api.BindAddr,

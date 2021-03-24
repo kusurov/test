@@ -6,21 +6,21 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
 	"kusurovAPI/internal/model"
+	"kusurovAPI/internal/repository"
 	"kusurovAPI/internal/server"
-	"kusurovAPI/internal/store"
 	"kusurovAPI/internal/utils"
 	"net/http"
 	"strconv"
 )
 
 type UserController struct {
-	UserStore    store.IUserRepository
+	UserStore    repository.IUserRepository
 	SessionStore sessions.Store
 }
 
 func NewUserController(s *server.Server) *UserController {
 	return &UserController{
-		UserStore:    s.Store.User(),
+		UserStore:    s.Store.User,
 		SessionStore: s.SessionStore,
 	}
 }
