@@ -1,5 +1,5 @@
 ## Описание
-Выполненное тестовое задание.
+Выполненное тестовое задание :)
 
 ## Использованные либы
 - [ozzo-validation v3.6.0](https://github.com/go-ozzo/ozzo-validation)
@@ -12,11 +12,12 @@
 ## Миграции
 Для применения миграций использую [golang-migrate](https://github.com/golang-migrate/migrate)
 ```sh
-migrate -path migrations -database "mysql://uname:upass@tcp(host:port)/dbname" up
+make migrate
 ```
+
 ## Запуск проекта
 ```sh
-go run cmd/main.go
+make run
 ```
 
 ## Затраченное рвемя
