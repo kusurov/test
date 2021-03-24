@@ -41,7 +41,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	s.Router.ServeHTTP(w, r)
 }
 
-func (s *Server) CreateStore() error {
+func (s *Server) InitializeRepositories() error {
 	db, err := sql.Open("mysql", s.Config.Database.Username+":"+s.Config.Database.Password+"@tcp("+s.Config.Database.Host+")/"+s.Config.Database.Dbname)
 
 	if err != nil {
@@ -66,7 +66,7 @@ func (s *Server) CloseDB() error {
 	return s.db.Close()
 }
 
-func (s *Server) InitializeLogging(loggingPath string) error {
+func (s *Server) InitializeLogger(loggingPath string) error {
 	loggingName := "logs" + time.Now().Format("20060102150405030405") + ".log"
 
 	if err := os.MkdirAll(loggingPath, os.ModePerm); err != nil {
@@ -77,6 +77,13 @@ func (s *Server) InitializeLogging(loggingPath string) error {
 	if err != nil {
 		return err
 	}
+
+	loglevel, err := logrus.ParseLevel(s.Config.Api.LogLevel)
+	if err != nil {
+		return err
+	}
+
+	s.Logger.SetLevel(loglevel)
 
 	s.Logger.SetOutput(io.MultiWriter(os.Stdout, file))
 	s.Logger.SetFormatter(&logrus.JSONFormatter{})

@@ -12,7 +12,7 @@ import (
 	"os/signal"
 )
 
-func Start(configPath string, loggingPath string) error {
+func Run(configPath string, loggingPath string) error {
 	config, err := configs.NewConfig(configPath)
 	if err != nil {
 		return err
@@ -21,14 +21,12 @@ func Start(configPath string, loggingPath string) error {
 	sessionStore := sessions.NewCookieStore([]byte(config.Api.SessionKey))
 
 	srv := server.NewServer(config, sessionStore)
-	if err := srv.InitializeLogging(loggingPath); err != nil {
+	if err := srv.InitializeLogger(loggingPath); err != nil {
 		return err
 	}
-
-	if err := srv.CreateStore(); err != nil {
+	if err := srv.InitializeRepositories(); err != nil {
 		return err
 	}
-
 	router.HandleRouter(srv)
 
 	initServer := &http.Server{

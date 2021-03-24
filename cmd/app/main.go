@@ -19,7 +19,7 @@ func init() {
 func main() {
 	flag.Parse()
 
-	if err := app.Start(configPath, loggingPath); err != nil {
+	if err := app.Run(configPath, loggingPath); err != nil {
 		log.Fatal(err)
 	}
 }

@@ -14,6 +14,12 @@ type Product struct {
 	Category    Category `json:"category,omitempty"`
 }
 
+type ProductSearchCriteria struct {
+	SearchCriteria struct {
+		Title string `json:"title"`
+	} `json:"searchCriteria"`
+}
+
 func (p *Product) Validate() error {
 	return validation.ValidateStruct(p,
 		validation.Field(&p.Title, validation.Required),
